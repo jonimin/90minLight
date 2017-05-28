@@ -6,6 +6,20 @@ import {Grid} from './components/Grid'
 import {FeedSelection} from './components/FeedSelection'
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      teamId:1,
+      teamName:"Arsenal"
+    };
+  }
+
+  onChangeSelection(selectedTeamName){
+    this.setState({
+      teamName: selectedTeamName
+    })
+  }
+  
   render() {
     return (
       <div className="App">
@@ -13,10 +27,10 @@ class App extends Component {
            <Header/>
         </div>
         <div>
-           <FeedSelection/>
+           <FeedSelection teamName = {this.state.teamName} onChange = {this.onChangeSelection.bind(this)}/>
         </div>
         <div>
-           <Grid/>
+           <Grid teamId = {this.state.teamId}/>
         </div>
       </div>
     );

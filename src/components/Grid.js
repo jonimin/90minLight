@@ -11,6 +11,7 @@ export class Grid extends React.Component {
       };
     }  
   
+  
   //trigger 1 time only
   componentDidMount() {
     this.updateFeed(this.state.selectedFeed)
@@ -23,7 +24,7 @@ export class Grid extends React.Component {
       }
     });
 
-    api.fetchTeamFeed()
+    api.fetchTeamFeed(this.props.teamId)
       .then((selectedFeed)=>this.setState(()=>({feed: selectedFeed})))
   }
 
@@ -39,47 +40,27 @@ export class Grid extends React.Component {
     </div>
     )
   }
-
-
-}
-function Article (props) {
-  var articles = api.getPost().then(function(post){
-     console.log(post);
-        return {
-          post
-        }
-      })
 }
 
 function GridArticels (props) {
-  var click =  function (){
-     return(
-      {/*<Router>
-        <div>
-          <Route path="/post" Component={Article}/>
-        </div>
-      </Router>*/}
-      )
-  } 
-  
-  var articels = props.articels.slice(1, 19);
-  
+  var articels = props.articels.slice(1, 19); 
   return (
     <div>
-      {Article()}
     <ul className='article-list'>
       {articels.map(function (article, index) {
         return (
-          /*<li className="article-item" onClick={() => { click()}}>*/
-            <li className="article-item">
-            <div>
-              <div className="article__image_container">
-                <img src={article.article.image_url} alt="image" className="article__image"/>
+          <li className="article-item">
+              <div>
+                 <a href={`http://www.90min.com/hybrid/posts/${article.article.id}`} target="_blank">
+                <div className="article__image_container">
+                  <img src={article.article.image_url} alt="image" className="article__image"/>
+                </div>
+                  </a>
+                <div className="article__title">
+                  {article.article.title}
+                </div>  
               </div>
-              <div className="article__title">
-                {article.article.title}
-              </div>  
-            </div>
+          
           </li>
         )
       })}
