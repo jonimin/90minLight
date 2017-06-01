@@ -8,24 +8,38 @@ export class Grid extends React.Component {
       super();
       this.state = {
         feed: null,
+        feedId: props.teamId
       };
     }  
   
-  
-  //trigger 1 time only
+  componentWillReceiveProps(nextProps){
+     this.updateFeedPosts(nextProps);
+  }
+
   componentDidMount() {
     this.updateFeed(this.state.selectedFeed)
+  }
+   
+  updateFeedPosts(nextProps) {
+    api.fetchTeamFeed(nextProps.teamId)
+      .then((selectedFeed)=>this.setState(()=>({feed: selectedFeed})))
+  }
+
+  setSelectedFeed(feed) {
+    this.setState({feed})
   }
 
   updateFeed(selectedFeed) {
     this.setState(function () {
       return {
         feed: selectedFeed,
+        feedId: this.props.teamId
       }
     });
-
-    api.fetchTeamFeed(this.props.teamId)
-      .then((selectedFeed)=>this.setState(()=>({feed: selectedFeed})))
+   
+    api
+      .fetchTeamFeed(this.state.feedId)
+      .then(this.setSelectedFeed.bind(this))
   }
 
 // render trigger every time the state changed
@@ -49,7 +63,7 @@ function GridArticels (props) {
     <ul className='article-list'>
       {articels.map(function (article, index) {
         return (
-          <li className="article-item">
+          <li key={index} className="article-item">
               <div>
                  <a href={`http://www.90min.com/hybrid/posts/${article.article.id}`} target="_blank">
                 <div className="article__image_container">

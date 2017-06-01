@@ -283,7 +283,70 @@ ul {
   object-fit: cover;
 }
 
-.selectContainer{
-  margin-top: 20px;
-  width: 78px;
+#selectedTeam{
+  margin-top: 18px;
+  width: 75px;
 }  
+
+.teamMenuContainer {
+   
+    margin: auto;
+}
+
+.leagueLogoMenu {
+  width:40px;
+  height: 40px; 
+}
+
+.leagueNametitle {
+  line-height: 40px;
+  color:orange;
+}
+
+.leagueLogoMenuContainer {
+  float: left;
+  margin-right: 10px;
+}
+
+.leagueMenu {
+  width: 100%;
+  height: 50px;
+  background: #e8e8e8;
+}
+
+.teamMenu {
+  border: 1px solid #e8e8e8;
+  width: 18%;
+  height: 125px;
+  font-size: 10px;
+}
+
+.teamsContainer {
+  display:flex;
+  flex-flow: row wrap;
+  flex-direction: column;
+  overflow-x: auto;
+  max-height: 375px;
+
+}
+
+.teamLogoContainer {
+    margin-top: 25px;
+    margin-left: 36%;
+}
+
+.teamTitle {
+    width: 100%;
+    text-align: center;
+    font-size: 1.125rem;
+    margin-top: 14px;
+}
+
+.teamLogo {
+  width: 60px;
+  height: 60px;
+}
+
+.teamNewContainer {
+  display: none;
+}

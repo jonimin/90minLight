@@ -4,22 +4,31 @@ import './App.css';
 import {Header} from './components/Header'
 import {Grid} from './components/Grid'
 import {FeedSelection} from './components/FeedSelection'
+import {TeamMenu} from './components/TeamMenu'
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      teamId:1,
-      teamName:"Arsenal"
+      teamId: "1",
+      teamName: "Arsenal",
+      openTeamMenu: false
     };
   }
 
-  onChangeSelection(selectedTeamName){
+  onUpdateFeed(feedId){
     this.setState({
-      teamName: selectedTeamName
+      teamId: feedId
     })
   }
   
+  openTeamMenu(){
+    this.setState({
+      ...this.state,
+      openTeamMenu: !this.state.openTeamMenu
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -27,7 +36,13 @@ class App extends Component {
            <Header/>
         </div>
         <div>
-           <FeedSelection teamName = {this.state.teamName} onChange = {this.onChangeSelection.bind(this)}/>
+           <FeedSelection teamName = {this.state.teamName} onUpdateFeed = {this.onUpdateFeed.bind(this)} openTeamMenu = {this.openTeamMenu.bind(this)} />
+        </div>
+        <div>
+           {!this.state.openTeamMenu
+          ? <span></span>
+          : <TeamMenu/>}
+          
         </div>
         <div>
            <Grid teamId = {this.state.teamId}/>
