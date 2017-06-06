@@ -1,12 +1,11 @@
-var React = require('react');
-var PropTypes = require('prop-types');
-var api = require('../api/Api');
+import Api from '../api/Api'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 
 export class FeedSelection extends React.Component {
  
   constructor(props) {
     super();
-     
     this.state = {
       options: null,
       selected: null,
@@ -15,7 +14,7 @@ export class FeedSelection extends React.Component {
   }  
 
 componentDidMount() {
-  this.updateOptions(this.state.options)
+  this.updateOptions();
 }
 
 updateSelectedTeamId(selectedTeam,feedName) {
@@ -26,32 +25,30 @@ updateSelectedTeamId(selectedTeam,feedName) {
       feedName:feedName
     }
   });
-  this.props.onUpdateFeed(selectedTeam);
+  this.props.onUpdateFeed(selectedTeam,feedName);
 }
 
 openTeamMenu() {
   this.props.openTeamMenu();
 }
 
-updateOptions(optionsFromServer) {
+
+updateOptions() {
   this.setState(function () {
     return {
       ...this.state,
-      options: optionsFromServer,
+      options:this.props.selectedTeamsApp
     }
   });
-
-  api.getLegues()
-    .then((optionsFromServer)=>this.setState(()=>({options: optionsFromServer})))
 }
-render(){
 
+render(){
   return (
     <div >
       <div> 
         {!this.state.options
           ? <p>LOADING!</p>
-          : <SelectOptions options = {this.state.options}  
+          : <SelectOptions leagues = {this.state.options}  
                            selected = {this.state.selected} 
                            updateFeed = {this.updateSelectedTeamId.bind(this)}
                            feedName = {this.state.feedName}
@@ -62,38 +59,48 @@ render(){
   }
 }
 
-
-function SelectOptions (x) {
+function SelectOptions (props) {
   
   function updateFeed(){
     let selectedindex = document.getElementById("selectedTeam").options.selectedIndex;
     let teamName = document.getElementById("selectedTeam").options[selectedindex].innerHTML;
-    if(teamName == "Add more"){
-      x.openTeamMenu();
+    if(teamName == "Add More"){
+      props.openTeamMenu();
     }
-    else{
-      x.updateFeed(document.getElementById("selectedTeam").value,teamName);    
+    else {
+      props.updateFeed(document.getElementById("selectedTeam").value,teamName);    
     }
   }
-  
+
   return (
     <div>
     <div className="selection_Container">
       <div className="selection_logo"></div>
       <div className="selection_title">
-         {x.feedName}
-      </div>
-    <select id="selectedTeam" onChange={updateFeed}>
-      {x.options.map(function (option, index) {
-        return (
-          <option key={index} value={option.id}>
-            {option.name}
-          </option>
-        )
+         {props.feedName}
+      </div>  
+      <select id="selectedTeam" onChange={updateFeed}>
+      {Object.keys(props.leagues).map(function (key) {
+        var teams = props.leagues[key]
+          return (  
+            <optgroup label={key}>
+            {teams.map(function (team, index) {
+              return (
+                <option key={index} value={team.id}>
+                  {team.name}
+                </option>
+              )
+            })}
+            </optgroup>
+          )
       })}
-      <option value="addMore">Add more</option>  
-    </select>
+      <optgroup >
+        <option  value="addMore">
+            Add More
+          </option>
+      </optgroup>
+       </select>
     </div>  
-    </div>
+    </div>    
   )
 }

@@ -1,8 +1,7 @@
-var React = require('react');
-var PropTypes = require('prop-types');
-var api = require('../api/Api');
+import Api from '../api/Api'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 
-//replace to import
 export class Grid extends React.Component {
   constructor(props) {
       super();
@@ -21,7 +20,7 @@ export class Grid extends React.Component {
   }
    
   updateFeedPosts(nextProps) {
-    api.fetchTeamFeed(nextProps.teamId)
+    Api.fetchTeamFeed(nextProps.teamId)
       .then((selectedFeed)=>this.setState(()=>({feed: selectedFeed})))
   }
 
@@ -37,12 +36,12 @@ export class Grid extends React.Component {
       }
     });
    
-    api
+    Api
       .fetchTeamFeed(this.state.feedId)
       .then(this.setSelectedFeed.bind(this))
   }
 
-// render trigger every time the state changed
+
   render(){
     return (
     <div className="grid_container">

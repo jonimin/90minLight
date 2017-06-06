@@ -1,7 +1,6 @@
 import logo from '../images/90min_logo.svg';
-var React = require('react');
-var PropTypes = require('prop-types');
-
+import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 
 export class Header extends React.Component {
   render(){
